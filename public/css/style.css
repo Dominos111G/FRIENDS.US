@@ -1,0 +1,14 @@
+*{
+    background-color: lightgrey;
+}
+body{
+    background-color: lightgrey;
+}
+/* do sekcji czatu */
+#chat{
+    border: 3px solid black;
+    border-radius: 25px;
+    background-color: grey;
+    color: black;
+    font-size: medium;
+}

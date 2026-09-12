@@ -1,0 +1,33 @@
+body{
+    background-color: white;
+    font-family: arial;
+}
+input{
+    background-color: white;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+label{
+    font-weight: bolder;
+}
+.shadow{
+    height: auto;
+    width: 500px;
+    background-color: lightgrey;
+    border: 2px solid black;
+    border-radius: 25px;
+    align-items: center;
+    text-align: center;
+    margin: 50px auto; 
+    padding: 30px;
+}
+button{
+    background-color: #1A1A1A;
+    color: white;
+    padding: 5px;
+    margin:5px;
+}
+button:hover{
+    background-color: #333333;
+}

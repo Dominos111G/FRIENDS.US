@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <%- include('elements/header.ejs') %><br>
+    <div class="shadow">
+        <h2>Log in to our system</h2>
+        <form action="/login" method="POST">
+            <label for="username">Login:</label><br>
+            <input type="text" id="username" name="username" required><br>
+        
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit">Sign in</button><br>
+        </form>
+        
+        <h2>Register to our system</h2>
+        <form action="/register" method="POST">
+            <label for="reg_username">Login:</label><br>
+            <input type="text" name="reg_username" id="reg_username" required><br>
+
+            <label for="reg_password">Password:</label><br>
+            <input type="password" id="reg_password" name="reg_password" required><br>
+            
+            <label for="reg_confirmPassword">Confirm password:</label><br>
+            <input type="password" id="reg_confirmPassword" required><br>
+
+            <label for="reg_name">Name:</label><br>
+            <input type="text" id="reg_name" name="reg_name" required><br>
+
+            <label for="reg_age">I confirm that i'm 18+</label><br>
+            <input type="checkbox" id="reg_age" name="reg_age" required><br>
+            <button type="submit">Sign up</button>
+        </form>
+    </div>
+    <%- include('elements/footer.ejs') %>    
+</body>
+</html>
