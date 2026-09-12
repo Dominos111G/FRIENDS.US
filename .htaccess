@@ -1,0 +1,26 @@
+Options -Indexes
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# Proxy API and socket.io to Node.js backend (on localhost:3000)
+# Requires mod_proxy and mod_proxy_http enabled. The [P] flag proxies the request.
+# Proxy /api/* and /socket.io/* to Node so AJAX and socket.io work without explicit ports in client.
+RewriteRule ^api/(.*)$ http://127.0.0.1:3000/api/$1 [P,L]
+RewriteRule ^socket.io/(.*)$ http://127.0.0.1:3000/socket.io/$1 [P,L]
+
+# Serve files from /public internally so URLs don't show /public/
+# If request is not for an existing file/dir and not already under /public/, rewrite to /public/<request>
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# Keep static asset compatibility for Apache; page routes are rendered by Node/EJS.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# The root startup probe remains the Apache directory index.
+DirectoryIndex index.html
