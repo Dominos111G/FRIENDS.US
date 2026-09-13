@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import http from 'http';
 import express from 'express';
+import session from 'express-session';
 import cors from 'cors';
 import path from 'path';
 import { Server } from 'socket.io';
@@ -9,8 +10,8 @@ import {
   getUsersCollection, getMessagesCollection, 
   getLoginDetailsCollection, getTokensCollection,
   getReportsCollection
-} from 'controllers/firebaseController.js';
-import { loginUser, registerUser, verifyUser, verifyUserToken } from 'controllers/userController.js';
+} from './controllers/firebaseController.js';
+import { loginUser, registerUser, verifyUser, verifyUserToken } from './controllers/userController.js';
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -36,6 +37,10 @@ app.get('/account', (req, res) => { res.render('account'); });
 app.get('/verify-account', (req, res) => { res.render('verify-account'); });
 app.get('/room/chat', (req, res) => { res.render('room/chat'); });
 app.get('/room/video', (req, res) => { res.render('room/video'); });
+app.get('/tou', (req, res) => { res.render('help/terms-of-use'); });
+app.get('/privacy-policy', (req, res) => { res.render('help/privacy-policy'); });
+app.get('/cookie-policy', (req, res) => { res.render('help/cookie-policy'); });
+app.get('/safety-and-help', (req, res) => { res.render('help/safety-and-help'); });
 app.post('/api/user/verifyToken', verifyUserToken);
 app.post('/api/user/login', loginUser);
 app.post('/api/user/register', registerUser);

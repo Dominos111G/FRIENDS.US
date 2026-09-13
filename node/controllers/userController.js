@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
 import admin from 'firebase-admin';
 
@@ -6,10 +6,7 @@ import {
   getUsersCollection, getMessagesCollection, 
   getLoginDetailsCollection, getTokensCollection,
   getReportsCollection
-} from 'controllers/firebaseController.js';
-
-const FieldValue = admin.firestore.FieldValue;
-const Filter = admin.firestore.Filter;
+} from './firebaseController.js';
 
 export async function loginUser(req, res) {
   const username = req.body.username;
@@ -48,7 +45,7 @@ export async function loginUser(req, res) {
     await tokensRef.add({
       token: rememberToken,
       userId: userDoc.id,
-      createdAt: FieldValue.serverTimestamp(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     });
     res.cookie('userToken', rememberToken, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
@@ -60,10 +57,10 @@ export async function loginUser(req, res) {
     ip: req.ip,
     userAgent: req.get('user-agent'),
     rememberMe: rememberMe,
-    loginAt: FieldValue.serverTimestamp()
+    loginAt: admin.firestore.FieldValue.serverTimestamp()
   });
 
-  await usersRef.doc(userDoc.id).update({ lastLogin: FieldValue.serverTimestamp() });
+  await usersRef.doc(userDoc.id).update({ lastLogin: admin.firestore.FieldValue.serverTimestamp() });
 
   return res.status(200).json({ success: true, message: 'Login successful.' });
 }
@@ -95,9 +92,9 @@ export async function registerUser(req, res) {
   }
 
   const usersRef = getUsersCollection();
-  const usernameSnapshot = await usersRef.where(Filter.or(
-    Filter.where('username', '==', username), 
-    Filter.where('email', '==', email)
+  const usernameSnapshot = await usersRef.where(admin.firestore.Filter.or(
+    admin.firestore.Filter.where('username', '==', username), 
+    admin.firestore.Filter.where('email', '==', email)
   )).get();
 
   if (!usernameSnapshot.empty) {
