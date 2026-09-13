@@ -11,7 +11,7 @@ import {
 export async function loginUser(req, res) {
   const username = req.body.username;
   const password = req.body.password;
-  const rememberMe = req.body.rememberMe || false;
+  const rememberMe = (Boolean(req.body.rememberMe) || false);
 
   if (!username || !password) {
     return res.status(400).json({ success: false, message: 'Some required fields are missing.' });
