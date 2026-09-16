@@ -10,34 +10,111 @@
     <%- include('elements/header.ejs') %><br>
     <div class="shadow">
         <h2>Log in to our system</h2>
-        <form action="/login" method="POST">
-            <label for="username">Login:</label><br>
+        <form id="login">
+            <label for="username">Username:</label><br>
             <input type="text" id="username" name="username" required><br>
         
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br>
-            <button type="submit">Sign in</button><br>
+            <button type="submit" id="login_button" name="login_button">Sign in</button><br>
         </form>
         
         <h2>Register to our system</h2>
-        <form action="/register" method="POST">
-            <label for="reg_username">Login:</label><br>
-            <input type="text" name="reg_username" id="reg_username" required><br>
+        <form id="registerForm" action="/register" method="POST">
+            <label for="reg_name">Username:</label><br>
+            <input type="text" id="reg_name" name="reg_name" required><br>
+
+            <label for="reg_email">Email:</label><br>
+            <input type="email" name="reg_email" id="reg_email" required><br>
 
             <label for="reg_password">Password:</label><br>
             <input type="password" id="reg_password" name="reg_password" required><br>
-            
-            <label for="reg_confirmPassword">Confirm password:</label><br>
-            <input type="password" id="reg_confirmPassword" required><br>
 
-            <label for="reg_name">Name:</label><br>
-            <input type="text" id="reg_name" name="reg_name" required><br>
+            <label for="reg_confirmPassword">Confirm password:</label><br>
+            <input type="password" id="reg_confirmPassword" name="reg_confirmPassword" required><br>
 
             <label for="reg_age">I confirm that i'm 18+</label><br>
             <input type="checkbox" id="reg_age" name="reg_age" required><br>
-            <button type="submit">Sign up</button>
+            <button type="button" id="reg_button" name="reg_button">Sign up</button>
         </form>
     </div>
-    <%- include('elements/footer.ejs') %>    
+    <%- include('elements/footer.ejs') %>
+    <script>
+        async function login_backend() {
+            const url = '/api/user/login';
+            const data = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || `HTTP error! Status: ${response.status}`);
+                }
+
+                alert('Success: ' + result.message);
+            } catch (error) {
+                console.error('Error sending action: ', error.message);
+                alert(`Error: ${error.message}`);
+            } finally {
+                document.getElementById('login_button').disabled = false;
+            }
+        }
+
+        async function reg_backend() {
+            const url = '/api/user/register';
+            const data = {
+                username: document.getElementById('reg_name').value,
+                email: document.getElementById('reg_email').value,
+                password: document.getElementById('reg_password').value,
+                confirmPassword: document.getElementById('reg_confirmPassword').value
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || `HTTP error! Status: ${response.status}`);
+                }
+
+                alert('Success: ' + result.message);
+            } catch (error) {
+                console.error('Error sending action: ', error.message);
+                alert(`Error: ${error.message}`);
+            } finally {
+                document.getElementById('reg_button').disabled = false;
+            }
+        }
+
+        document.getElementById('login_button').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('login_button').disabled = true;
+            login_backend();
+        });
+
+        document.getElementById('reg_button').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('reg_button').disabled = true;
+            reg_backend();
+        });
+    </script>
 </body>
 </html>
