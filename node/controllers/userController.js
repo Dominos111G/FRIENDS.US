@@ -11,7 +11,7 @@ import {
 export async function loginUser(req, res) {
   const username = req.body.username;
   const password = req.body.password;
-  const rememberMe = req.body.rememberMe || false;
+  const rememberMe = (Boolean(req.body.rememberMe) || false);
 
   if (!username || !password) {
     return res.status(400).json({ success: false, message: 'Some required fields are missing.' });
@@ -69,9 +69,8 @@ export async function registerUser(req, res) {
   const username = String(req.body.username || '').trim();
   const email = String(req.body.email || '').trim();
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
 
-  if (!username || !email || !password || !confirmPassword) {
+  if (!username || !email || !password) {
     return res.status(400).json({ success: false, message: 'Some required fields are missing.' });
   }
 
@@ -81,10 +80,6 @@ export async function registerUser(req, res) {
 
   if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
     return res.status(400).json({ success: false, message: 'Invalid email format.' });
-  }
-
-  if (password !== confirmPassword) {
-    return res.status(400).json({ success: false, message: 'Passwords do not match.' });
   }
 
   if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
@@ -116,12 +111,12 @@ export async function registerUser(req, res) {
     isActive: false,
     verifyCode, 
     verifyExpiresAt: new Date(Date.now() + 3 * 60 * 60 * 1000),
-    createdAt: FieldValue.serverTimestamp(),
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
     permissions: 1,
     lastLogin: null
   });
 
-  return res.status(201).json({ success: true, message: 'Registration successful. Please verify your account.' });
+  return res.status(200).json({ success: true, message: 'Registration successful. Please verify your account.' });
 }
 
 export async function verifyUser(req, res) {

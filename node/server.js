@@ -6,6 +6,8 @@ import cors from 'cors';
 import path from 'path';
 import { Server } from 'socket.io';
 
+import { registerServerSocket } from './controllers/socketController.js';
+
 import { 
   getUsersCollection, getMessagesCollection, 
   getLoginDetailsCollection, getTokensCollection,
@@ -19,7 +21,7 @@ app.set('views', path.resolve('public'));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-app.use(session({
+const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   resave: false,            // Nie zapisuj sesji ponownie, jeśli nic się w niej nie zmieniło
   saveUninitialized: false, // Nie twórz sesji dla niezalogowanych użytkowników (oszczędność miejsca)
@@ -28,7 +30,8 @@ app.use(session({
     httpOnly: true,       // Chroni przed kradzieżą cookie przez skrypty JS w przeglądarce (XSS)
     maxAge: 1000 * 60 * 60 * 24 * 7 // Czas życia sesji (np. 7 dni)
   }
-}));
+});
+app.use(sessionMiddleware);
 
 app.use(express.static(path.resolve('public')));
 app.get('/', (req, res) => { res.render('index'); });
@@ -46,13 +49,23 @@ app.post('/api/user/login', loginUser);
 app.post('/api/user/register', registerUser);
 app.post('/api/user/verify', verifyUser);
 
+// app.post('/api/chat/search', null);
+// app.post('/api/chat/skip', null);
+// app.post('/api/chat/stop', null);
+// app.post('/api/chat/send', null);
+// app.post('/api/chat/report', null);
+
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*', methods: ['GET', 'POST'], credentials: true },
+  cors: { origin: true, methods: ['GET', 'POST'], credentials: true },
   transports: ['websocket', 'polling']
 });
+io.engine.use(sessionMiddleware);
+
+const socketServerLoop = registerServerSocket(io); 
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Serwer HTTP działa na http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
+  socketServerLoop();
 });
