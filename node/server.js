@@ -40,7 +40,7 @@ app.get('/room/video', (req, res) => { res.render('room/video'); });
 app.get('/tou', (req, res) => { res.render('help/terms-of-use'); });
 app.get('/privacy-policy', (req, res) => { res.render('help/privacy-policy'); });
 app.get('/cookie-policy', (req, res) => { res.render('help/cookie-policy'); });
-app.get('/safety-and-help', (req, res) => { res.render('help/safety-and-help'); });
+app.get('/safety-and-health', (req, res) => { res.render('help/safety-and-health'); });
 app.post('/api/user/verifyToken', verifyUserToken);
 app.post('/api/user/login', loginUser);
 app.post('/api/user/register', registerUser);

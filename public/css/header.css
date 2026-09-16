@@ -1,0 +1,36 @@
+header {
+    background-color: lightgrey;
+    font-family: Arial, sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+    padding: 10px 20px;             
+    box-sizing: border-box;         
+}
+
+#site-name {
+    font-size: large;
+    font-weight: bold;
+}
+
+#header-buttons {
+    display: flex;
+    gap: 10px; 
+}
+
+#header-buttons button {
+    background-color: #1A1A1A; 
+    color: white;
+    border: none;              
+    padding: 8px 16px;         
+    font-weight: bold;       
+}
+
+#header-buttons button:hover {
+    background-color: #333333; 
+}
