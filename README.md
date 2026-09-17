@@ -1,5 +1,5 @@
 # FRIEND CHAT
-Projekt na obronę praktyk pt. FRIENDS.US to platforma internetowa do poznawania i rozmawiania z nowymi osobami.
+Projekt na obronę praktyk pt. FRIEND CHAT to platforma internetowa do poznawania i rozmawiania z nowymi osobami.
 
 ## OPIS
 FRIEND CHAT to platforma internetowa do znajdowania przyjaciół i partnerów do rozmów, skierowana wyłącznie do osób pełnoletnich. Serwis oferuje przestrzeń do komunikacji prywatnej, grupowej oraz wideo. Platforma umożliwia nawiązywanie kontaktów i rozmowy z nieznajomymi na dowolne tematy. Jej głównym celem jest pomoc w przełamywaniu barier społecznych oraz językowych, dzięki możliwości prowadzenia konwersacji z ludźmi z całego świata.
